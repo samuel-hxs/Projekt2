@@ -1,19 +1,26 @@
 package de.hexswarm.dev.school.projekt2.views;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import de.hexswarm.dev.school.projekt2.controlers.HexManager;
+import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 
 public class HexSplash extends HexCard {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8346404464497507916L;
 	private HexCard _card = new HexLogin(null);
 	
-	public HexSplash(HexManager manager) {
+	public HexSplash(HexCardManager manager) {
 		super(manager);
 		_name = "Splash";
+		setBackground(new Color(119, 149, 242));
 		
 		JLabel label = new JLabel();
 		label.setText("Hello World!");
@@ -21,6 +28,10 @@ public class HexSplash extends HexCard {
 		
 		JButton button = new JButton();
 		button.setText("NextCard");
+		button.setBackground(new Color(59, 89, 182));
+		button.setForeground(Color.WHITE);
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+        button.setFocusPainted(false);
 		button.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

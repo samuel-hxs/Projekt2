@@ -9,12 +9,12 @@ import javax.swing.JPanel;
 import de.hexswarm.dev.school.projekt2.views.HexCard;
 import de.hexswarm.dev.school.projekt2.views.HexForm;
 
-public class HexManager {
+public class HexCardManager {
 	private Stack<HexCard> _stack = new Stack<HexCard>();
 	private HexForm _form;
 	private JPanel _cards;
 	
-	public HexManager(HexForm form)	{
+	public HexCardManager(HexForm form)	{
 		_form = form;
 		_cards = new JPanel(new CardLayout());
 			_form.getContentPane().add(_cards);

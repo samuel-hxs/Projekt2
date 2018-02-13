@@ -2,17 +2,17 @@ package de.hexswarm.dev.school.projekt2.views;
 
 import javax.swing.JPanel;
 
-import de.hexswarm.dev.school.projekt2.controlers.HexManager;
+import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 
 public class HexCard extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 252845380818170971L;
-	protected HexManager _manager;
+	protected HexCardManager _manager;
 	protected String _name;
 	
-	public HexCard(HexManager manager) {
+	public HexCard(HexCardManager manager) {
 		_manager = manager;
 	}
 	
@@ -28,7 +28,7 @@ public class HexCard extends JPanel {
 		return _name;
 	}
 
-	public void SetManager(HexManager manager) {
+	public void SetManager(HexCardManager manager) {
 		_manager = manager;
 	}
 }

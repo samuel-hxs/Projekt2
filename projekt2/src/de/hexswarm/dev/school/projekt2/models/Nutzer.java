@@ -7,6 +7,7 @@ public class Nutzer {
 	private String _name;
 	private String _nachname;
 	private String _password;
+	private boolean _angemeldet;
 	
 	public Nutzer(UUID uuid, String name, String nachname, String password) {
 		_name = name;
@@ -29,5 +30,14 @@ public class Nutzer {
 
 	public String GetPasswortHash() {
 		return _password;
+	}
+	
+	public boolean Anmelden() {
+		_angemeldet = false;
+		return _angemeldet;
+	}
+	
+	public boolean IsAngemeldet() {
+		return _angemeldet;
 	}
 }

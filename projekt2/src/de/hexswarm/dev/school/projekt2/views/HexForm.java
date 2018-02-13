@@ -7,7 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import de.hexswarm.dev.school.projekt2.controlers.HexManager;
+import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 
 public class HexForm extends JFrame {
 
@@ -16,7 +16,7 @@ public class HexForm extends JFrame {
 	 */
 	private static final long serialVersionUID = -913372250282046673L;
 	
-	private HexManager _manager;
+	private HexCardManager _manager;
 	
 	public HexForm(String name)
 	{
@@ -28,7 +28,7 @@ public class HexForm extends JFrame {
 		this.setMinimumSize(new Dimension(width, height));
 		this.setMaximumSize(new Dimension(width, height));
 
-		_manager = new HexManager(this);
+		_manager = new HexCardManager(this);
 				
 		HexCard splash = new HexSplash(_manager);
 		splash.Push();
