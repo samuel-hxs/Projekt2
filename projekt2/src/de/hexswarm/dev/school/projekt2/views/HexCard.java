@@ -5,7 +5,11 @@ import javax.swing.JPanel;
 import de.hexswarm.dev.school.projekt2.controlers.HexManager;
 
 public class HexCard extends JPanel {
-	private HexManager _manager;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 252845380818170971L;
+	protected HexManager _manager;
 	protected String _name;
 	
 	public HexCard(HexManager manager) {
@@ -22,5 +26,9 @@ public class HexCard extends JPanel {
 	
 	public String GetName() {
 		return _name;
+	}
+
+	public void SetManager(HexManager manager) {
+		_manager = manager;
 	}
 }

@@ -9,7 +9,8 @@ import javax.swing.JLabel;
 import de.hexswarm.dev.school.projekt2.controlers.HexManager;
 
 public class HexSplash extends HexCard {
-
+	private HexCard _card = new HexLogin(null);
+	
 	public HexSplash(HexManager manager) {
 		super(manager);
 		_name = "Splash";
@@ -23,7 +24,8 @@ public class HexSplash extends HexCard {
 		button.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	manager.Push(new HexLogin(manager));
+		    	_card.SetManager(_manager);
+		    	_manager.Push(_card);
 		    }
 		});
 		add(button);

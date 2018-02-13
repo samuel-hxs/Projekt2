@@ -7,36 +7,42 @@ import java.util.Stack;
 import javax.swing.JPanel;
 
 import de.hexswarm.dev.school.projekt2.views.HexCard;
+import de.hexswarm.dev.school.projekt2.views.HexForm;
 
 public class HexManager {
 	private Stack<HexCard> _stack = new Stack<HexCard>();
-	private Container _pane;
+	private HexForm _form;
 	private JPanel _cards;
 	
-	public HexManager(Container pane)	{
-		_pane = pane;
+	public HexManager(HexForm form)	{
+		_form = form;
 		_cards = new JPanel(new CardLayout());
-		_pane.add(_cards);
+			_form.getContentPane().add(_cards);
 	}
 
 	public void Push(HexCard hexCard) {
 		if(!_stack.contains(hexCard)) {
-			System.out.println("Pushing '" + hexCard.GetName() + "' to Stack.");
-			_stack.push(hexCard);
+			//System.out.println("Pushing '" + hexCard.GetName() + "' to stack.");
 			
+			_stack.push(hexCard);
 			_cards.add(_stack.peek(), _stack.peek().getName());
 			
 			CardLayout cl = (CardLayout)(_cards.getLayout());
 			cl.show(_cards, _stack.peek().GetName());
+			cl.last(_cards);
 		}
 		else {
-			System.out.println("HexCard '" + hexCard.GetName() + "' already exsists.");
+			//System.out.println("HexCard '" + hexCard.GetName() + "' already exsists.");
+
+			CardLayout cl = (CardLayout)(_cards.getLayout());
+			cl.show(_cards, _stack.peek().GetName());
 		}
 	}
 
 	public void Pop(HexCard hexCard) {
 		_stack.pop();
+		
 		CardLayout cl = (CardLayout)(_cards.getLayout());
-		cl.show(_stack.peek(), _stack.peek().GetName());
+		cl.previous(_cards);;
 	}
 }

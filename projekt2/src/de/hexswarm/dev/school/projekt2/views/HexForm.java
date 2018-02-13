@@ -1,7 +1,9 @@
 package de.hexswarm.dev.school.projekt2.views;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -18,9 +20,15 @@ public class HexForm extends JFrame {
 	
 	public HexForm(String name)
 	{
+		int width = 400;
+		int height = 600;
 		this.setTitle(name);
-		this.setBounds(new Rectangle(0, 0, 400, 600));
-		_manager = new HexManager(this.getContentPane());
+		//this.setBounds(new Rectangle(0, 0, width, height));
+		this.setPreferredSize(new Dimension(width, height));
+		this.setMinimumSize(new Dimension(width, height));
+		this.setMaximumSize(new Dimension(width, height));
+
+		_manager = new HexManager(this);
 				
 		HexCard splash = new HexSplash(_manager);
 		splash.Push();
