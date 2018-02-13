@@ -93,6 +93,10 @@ public class HexLogin extends HexCard {
 		c.gridheight = 1;
 		c.ipady = 0;
 		add(button, c);
+		
+		// TODO Einen thread zum prüfen der Daten
+		// TODO Events in den Controller Auslagern
+		// TODO Bessere, zentrierte und alignd Gestaltung des Layouts	
 	}
 
 }

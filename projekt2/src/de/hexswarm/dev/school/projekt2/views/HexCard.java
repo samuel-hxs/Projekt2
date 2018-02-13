@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 
+
 public class HexCard extends JPanel {
 	/**
 	 * 

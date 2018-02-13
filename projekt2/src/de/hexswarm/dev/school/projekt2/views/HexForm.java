@@ -1,9 +1,7 @@
 package de.hexswarm.dev.school.projekt2.views;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
