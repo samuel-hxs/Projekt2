@@ -2,13 +2,14 @@ package de.hexswarm.dev.school.projekt2.views;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
+import de.hexswarm.dev.school.projekt2.controlers.SplashControl;
 
 public class HexSplash extends HexCard {
 	/**
@@ -23,7 +24,7 @@ public class HexSplash extends HexCard {
 		setBackground(new Color(119, 149, 242));
 		
 		JLabel label = new JLabel();
-		label.setText("Hello World!");
+		label.setText("HexSplash");
 		add(label);
 		
 		JButton button = new JButton();
@@ -32,14 +33,16 @@ public class HexSplash extends HexCard {
 		button.setForeground(Color.WHITE);
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
         button.setFocusPainted(false);
-		button.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	_card.SetManager(_manager);
-		    	_manager.Push(_card);
-		    }
-		});
-		add(button);
+		button.addActionListener(new SplashControl());
+		//add(button);
+		
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			  @Override
+			  public void run() {
+			    new HexLogin(_manager).Push();
+			  }
+			}, 800); // 800 ms
 		
 		// TODO Laden der Konfiguration
 		// TODO Verbinden zur Datenbank

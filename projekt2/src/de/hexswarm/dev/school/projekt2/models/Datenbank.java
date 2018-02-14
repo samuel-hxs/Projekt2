@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+
 import java.sql.ResultSet;
 
 public class Datenbank {
@@ -25,7 +28,7 @@ public class Datenbank {
 		try {
 			_conn = DriverManager.getConnection(String.format(_template, _server, _shema,  _username, _password));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("");
 			return false;
 		}
 
@@ -36,22 +39,35 @@ public class Datenbank {
 		return false;
 	}
 	
-	public boolean Statement() {
+	public Rückgabe Statement(String statement) {
 		Statement stmt = null;
 		ResultSet rs = null;
+		Rückgabe rgb = new Rückgabe();
+		
+		if(_conn == null || _verbunden == false) {
+			Verbinde();
+		}
+		
 
+		if(_conn == null || _verbunden == false) {
+			return rgb;
+		}
+		
 		try {
 		    stmt = _conn.createStatement();
-		    rs = stmt.executeQuery("SELECT foo FROM bar");
+		    //rs = stmt.executeQuery("SELECT foo FROM bar");
 
 		    // or alternatively, if you don't know ahead of time that
 		    // the query will be a SELECT...
 
-		    if (stmt.execute("SELECT foo FROM bar")) {
+		    if (stmt.execute(statement)) {
 		        rs = stmt.getResultSet();
 		    }
 
 		    // Now do something with the ResultSet ....
+		    while (rs.next()) {
+		    	rgb.Add(rs);
+		    }
 		}
 		catch (SQLException ex){
 		    // handle any errors
@@ -82,6 +98,6 @@ public class Datenbank {
 		    }
 		}
 		
-		return false;
+		return rgb;
 	}
 }

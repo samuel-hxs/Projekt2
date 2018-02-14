@@ -4,14 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
 import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
@@ -27,72 +31,69 @@ public class HexLogin extends HexCard {
 	public HexLogin(HexCardManager manager) {
 		super(manager);
 		_name = "Login";
-		setBackground(new Color(119, 149, 242));
+		//setBackground(new Color(119, 149, 242));
 		
 		// Layout
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(10,10,10,10);  // padding
+		setLayout(new GridLayout(0, 2));
+
+		// Nutzer
+		JLabel lbl_info = new JLabel();
+		lbl_info.setText("DB Verbindung fehlgeschlagen!");
+		add(lbl_info);
+
+		JButton btn_konfig = new JButton();
+		btn_konfig.setText("Einstellungen");
+		btn_konfig.setBackground(new Color(59, 89, 182));
+		btn_konfig.setForeground(Color.WHITE);
+		btn_konfig.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btn_konfig.setFocusPainted(false);
+		btn_konfig.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	new HexKonfig(_manager).Push();
+		    }
+		});
+		add(btn_konfig);
 
 		// Nutzer
 		JLabel lbl_nutzer = new JLabel();
 		lbl_nutzer.setText("Nutzer:");
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weighty = 0.0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.EAST;
-		add(lbl_nutzer, c);
+		add(lbl_nutzer);
 		JTextField txt_nutzer = new JTextField();
-		c.gridx = 2;
-		c.gridy = 0;
-		c.weighty = 1.0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(txt_nutzer, c);
+		add(txt_nutzer);
 		
 		// Passwort
 		JLabel lbl_passwort = new JLabel();
 		lbl_passwort.setText("Passwort:");
-		c.gridx = 0;
-		c.gridy = 2;
-		c.weighty = 0.0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.EAST;
-		add(lbl_passwort, c);
+		add(lbl_passwort);
 		JPasswordField pwd_passwort = new JPasswordField();
-		pwd_passwort.setBackground(new Color(79, 109, 202));
-		pwd_passwort.setForeground(Color.WHITE);
+		//pwd_passwort.setBackground(new Color(79, 109, 202));
+		//pwd_passwort.setForeground(Color.WHITE);
 		pwd_passwort.setFont(new Font("Tahoma", Font.BOLD, 12));
-		c.gridx = 2;
-		c.gridy = 2;
-		c.weighty = 1.0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(pwd_passwort, c);
+		add(pwd_passwort);
+
+		add(new JPanel());
 		
-		JButton button = new JButton();
-		button.setText("Anmelden");
-		button.setBackground(new Color(59, 89, 182));
-		button.setForeground(Color.WHITE);
-		button.setFont(new Font("Tahoma", Font.BOLD, 12));
-        button.setFocusPainted(false);
-		button.addActionListener(new ActionListener() {
+		JButton btn_login = new JButton();
+		btn_login.setText("Anmelden");
+		btn_login.setBackground(Color.GREEN);
+		btn_login.setForeground(Color.WHITE);
+		btn_login.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btn_login.setFocusPainted(false);
+		btn_login.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	if(HexNutzerManager.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword())) {
-		    		new HexMain(_manager).Push();
-		    	}
+			    	HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.GetKonfig());
+			    	if(ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword())) {
+			    		new HexMain(_manager).Push();
+			    	}
+			    	else
+			    	{
+			    		lbl_info.setText("Anmeldung nicht erlaubt!");
+			    	}
 		    }
 		});
-		c.weighty = 1.0;   //request any extra vertical space
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-		c.gridx = 1;       //aligned with button 2
-		c.gridy = 2;       //third row
-		c.gridwidth = 3;
-		c.gridheight = 1;
-		c.ipady = 0;
-		add(button, c);
+		add(btn_login);
 		
 		// TODO Einen thread zum prüfen der Daten
 		// TODO Events in den Controller Auslagern

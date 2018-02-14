@@ -6,18 +6,21 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
+import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.views.HexCard;
 import de.hexswarm.dev.school.projekt2.views.HexForm;
 
 public class HexCardManager {
+	private HexKonfiguration _konf;
 	private Stack<HexCard> _stack = new Stack<HexCard>();
 	private HexForm _form;
 	private JPanel _cards;
 	
-	public HexCardManager(HexForm form)	{
+	public HexCardManager(HexForm form, HexKonfiguration konf)	{
+		_konf = konf;
 		_form = form;
 		_cards = new JPanel(new CardLayout());
-			_form.getContentPane().add(_cards);
+		_form.getContentPane().add(_cards);
 	}
 
 	public void Push(HexCard hexCard) {
@@ -44,5 +47,9 @@ public class HexCardManager {
 		
 		CardLayout cl = (CardLayout)(_cards.getLayout());
 		cl.previous(_cards);;
+	}
+
+	public HexKonfiguration GetKonfig() {
+		return _konf;
 	}
 }

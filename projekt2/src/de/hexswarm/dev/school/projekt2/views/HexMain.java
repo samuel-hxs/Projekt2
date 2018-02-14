@@ -15,6 +15,8 @@ public class HexMain extends HexCard {
 
 	public HexMain(HexCardManager manager) {
 		super(manager);
+		_name = "Menu";
+		//setBackground(new Color(119, 149, 242));
 		
 		JLabel lbl_titel = new JLabel();
 		lbl_titel.setText("Hauptmenü");
