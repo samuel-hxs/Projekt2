@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
@@ -21,16 +23,19 @@ import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 import de.hexswarm.dev.school.projekt2.controlers.HexNutzerManager;
 
-public class HexLogin extends HexCard {
+public class HexLogin extends HexCard implements ActionListener {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1369699227541183517L;
-
+	private SwingWorker<Boolean, Void> worker;
+	private Timer timer;
+	
 	public HexLogin(HexCardManager manager) {
 		super(manager);
 		_name = "Login";
+		HexLogin local = this;
 		//setBackground(new Color(119, 149, 242));
 		
 		// Layout
@@ -83,21 +88,81 @@ public class HexLogin extends HexCard {
 		btn_login.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-			    	HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.GetKonfig());
-			    	if(ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword())) {
-			    		new HexMain(_manager).Push();
-			    	}
-			    	else
-			    	{
-			    		lbl_info.setText("Anmeldung nicht erlaubt!");
-			    	}
+		    	btn_login.setEnabled(false);
+		    
+				// Wahrscheinlich nicht notwendig.
+				if(worker != null) {
+					worker = null;
+				}
+
+				int pause = 1000;
+				int speed = 100;
+				if (timer == null) {
+					timer = new Timer(speed, local);
+		        timer.setInitialDelay(pause);
+		        timer.start(); 
+				}
+				else {
+					timer.restart();
+				}
+				
+				if(worker == null) {
+				// Ein Test für Hintergrundberechnungen oder zeitlastige Aufgaeben.
+				worker = new SwingWorker<Boolean, Void>() {
+				    @Override
+				    public Boolean doInBackground() {
+				        Boolean innerImgs = new Boolean(false);
+				        HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.GetKonfig());
+				    	innerImgs = ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword());
+				        return innerImgs;
+				    }
+
+				    @Override
+				    public void done() {
+				        //Remove the "Loading images" label.
+				        try {
+				        	Boolean b = get();
+				        	if(b == true)
+				        	{
+				        	new HexMain(_manager).Push();
+				        	}
+				        	worker.cancel(true);
+		    	btn_login.setEnabled(true);
+				        } catch (InterruptedException ignore) {}
+				        catch (java.util.concurrent.ExecutionException e) {
+				            String why = null;
+				            Throwable cause = e.getCause();
+				            if (cause != null) {
+				                why = cause.getMessage();
+				            } else {
+				                why = e.getMessage();
+				            }
+				            System.err.println("Error retrieving file: " + why);
+				        }
+				    }
+				};
+				}
+				worker.execute();
 		    }
 		});
 		add(btn_login);
-		
+		 
 		// TODO Einen thread zum prüfen der Daten
 		// TODO Events in den Controller Auslagern
 		// TODO Bessere, zentrierte und alignd Gestaltung des Layouts	
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+        if (!worker.isDone()) {
+            return;
+        }
+        timer.stop();
+        
+		//new HexMain(_manager).Push();
+			    	
+			    		
+		//this.lbl_info.setText("Anmeldung nicht erlaubt!");
 	}
 
 }
