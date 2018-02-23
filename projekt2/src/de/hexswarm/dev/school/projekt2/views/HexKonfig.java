@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
 import de.hexswarm.dev.school.projekt2.controlers.HexNutzerManager;
 import de.hexswarm.dev.school.projekt2.models.Datenbank;
@@ -26,6 +27,7 @@ public class HexKonfig extends HexCard {
 	public HexKonfig(HexCardManager manager) {
 		super(manager);
 		_name = "Konfiguration";
+		//HexKonfiguration konf = manager.holeKonfiguration();
 		
 		// Layout
 		setLayout(new GridLayout(0, 2));
@@ -42,6 +44,7 @@ public class HexKonfig extends HexCard {
 		lbl_nutzer.setText("Nutzer:");
 		add(lbl_nutzer);
 		JTextField txt_nutzer = new JTextField();
+		//txt_nutzer.setText(konf.GetDB().);
 		add(txt_nutzer);
 		
 		// Passwort
@@ -60,6 +63,13 @@ public class HexKonfig extends HexCard {
 		add(lbl_server);
 		JTextField txt_server = new JTextField();
 		add(txt_server);
+		
+		// Shema
+		JLabel lbl_shema = new JLabel();
+		lbl_shema.setText("Shema:");
+		add(lbl_shema);
+		JTextField txt_shema = new JTextField();
+		add(txt_shema);
 
 		JButton btn_abbrechen = new JButton();
 		btn_abbrechen.setText("Abbrechen");
@@ -84,11 +94,11 @@ public class HexKonfig extends HexCard {
 		btn_save.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	if(!manager.GetKonfig().SaveDB(txt_nutzer.getText(), new String(pwd_passwort.getPassword()), txt_server.getText())) {
-		    		lbl_info.setText("Speichern fehlgeschlagen!");
+		    	if(manager.getKonfiguration().speichern(txt_nutzer.getText(), new String(pwd_passwort.getPassword()), txt_server.getText(), txt_shema.getText())) {
+		    		Pop();
 		    	}
 		    	else {
-		    		Pop();
+		    		lbl_info.setText("Speichern fehlgeschlagen!");
 		    	}
 		    }
 		});

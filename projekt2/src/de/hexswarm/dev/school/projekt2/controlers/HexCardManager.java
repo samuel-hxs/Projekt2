@@ -28,11 +28,11 @@ public class HexCardManager {
 			//System.out.println("Pushing '" + hexCard.GetName() + "' to stack.");
 			
 			_stack.push(hexCard);
-			_cards.add(_stack.peek(), _stack.peek().getName());
+			_cards.add(hexCard, hexCard.GetName());
 			
 			CardLayout cl = (CardLayout)(_cards.getLayout());
-			cl.show(_cards, _stack.peek().GetName());
-			cl.last(_cards);
+			cl.show(_cards, hexCard.GetName());
+			//cl.last(_cards);
 		}
 		else {
 			//System.out.println("HexCard '" + hexCard.GetName() + "' already exsists.");
@@ -43,13 +43,25 @@ public class HexCardManager {
 	}
 
 	public void Pop(HexCard hexCard) {
-		_stack.pop();
+		if(_stack.size() <= 0) {
+			System.out.println("Fehler im UI Stack.");
+			return;
+		}
 		
+		if(!_stack.contains(hexCard))
+		{
+			System.out.println("Object nicht im Stack. Wurde Push benutzt?");
+			return;
+		}
+		
+		_stack.remove(hexCard);
 		CardLayout cl = (CardLayout)(_cards.getLayout());
-		cl.previous(_cards);;
+		//cl.previous(_cards);
+		cl.show(_cards, _stack.peek().GetName());
+
 	}
 
-	public HexKonfiguration GetKonfig() {
+	public HexKonfiguration getKonfiguration() {
 		return _konf;
 	}
 }

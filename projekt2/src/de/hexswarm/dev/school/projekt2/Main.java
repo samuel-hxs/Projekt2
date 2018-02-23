@@ -8,8 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		HexKonfiguration konf = new HexKonfiguration();
-		konf.Save();
-		konf.Load();
+		konf.laden();
 		
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.

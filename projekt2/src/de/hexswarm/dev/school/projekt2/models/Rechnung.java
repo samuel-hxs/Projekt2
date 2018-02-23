@@ -2,6 +2,8 @@ package de.hexswarm.dev.school.projekt2.models;
 
 import java.util.LinkedList;
 
+import javax.swing.ListModel;
+
 public class Rechnung {
 		private Kunde _kunde;
 		private Nutzer _nutzer;
@@ -37,5 +39,9 @@ public class Rechnung {
 			if(_artikels.addAll(artikels)) {
 				_artikels.removeAll(artikels);
 			}
+		}
+
+		public LinkedList<Artikel> getArtikels() {
+			return _artikels;
 		}
 }

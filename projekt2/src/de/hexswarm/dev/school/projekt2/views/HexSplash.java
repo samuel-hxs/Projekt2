@@ -24,7 +24,10 @@ public class HexSplash extends HexCard {
 		setBackground(new Color(119, 149, 242));
 		
 		JLabel label = new JLabel();
-		label.setText("HexSplash");
+		label.setText("Projekt2");
+		label.setFont(new Font("Tahoma", Font.BOLD, 18));
+		label.setBackground(new Color(59, 89, 182));
+		label.setForeground(Color.WHITE);
 		add(label);
 		
 		JButton button = new JButton();

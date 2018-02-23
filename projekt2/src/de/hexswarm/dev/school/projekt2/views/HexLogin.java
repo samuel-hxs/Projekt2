@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -111,10 +113,10 @@ public class HexLogin extends HexCard implements ActionListener {
 				worker = new SwingWorker<Boolean, Void>() {
 				    @Override
 				    public Boolean doInBackground() {
-				        Boolean innerImgs = new Boolean(false);
-				        HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.GetKonfig());
-				    	innerImgs = ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword());
-				        return innerImgs;
+				        Boolean result = new Boolean(false);
+				        HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.getKonfiguration());
+				    	result = ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword());
+				        return result;
 				    }
 
 				    @Override
@@ -124,10 +126,9 @@ public class HexLogin extends HexCard implements ActionListener {
 				        	Boolean b = get();
 				        	if(b == true)
 				        	{
-				        	new HexMain(_manager).Push();
+				        		new HexMain(_manager).Push();
 				        	}
 				        	worker.cancel(true);
-		    	btn_login.setEnabled(true);
 				        } catch (InterruptedException ignore) {}
 				        catch (java.util.concurrent.ExecutionException e) {
 				            String why = null;
@@ -139,6 +140,14 @@ public class HexLogin extends HexCard implements ActionListener {
 				            }
 				            System.err.println("Error retrieving file: " + why);
 				        }
+				        catch(CancellationException e) {
+				        	//debug
+				        	{
+				        		new HexMain(_manager).Push();
+				        	}
+			        	}
+
+				    	btn_login.setEnabled(true);
 				    }
 				};
 				}
@@ -146,23 +155,17 @@ public class HexLogin extends HexCard implements ActionListener {
 		    }
 		});
 		add(btn_login);
-		 
-		// TODO Einen thread zum prüfen der Daten
-		// TODO Events in den Controller Auslagern
-		// TODO Bessere, zentrierte und alignd Gestaltung des Layouts	
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
         if (!worker.isDone()) {
-            return;
+        	//Debug
+        	{worker.cancel(true);
+        	timer.stop();
+        	}return;
         }
         timer.stop();
-        
-		//new HexMain(_manager).Push();
-			    	
-			    		
-		//this.lbl_info.setText("Anmeldung nicht erlaubt!");
 	}
 
 }

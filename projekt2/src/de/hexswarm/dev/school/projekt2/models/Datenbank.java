@@ -18,25 +18,33 @@ public class Datenbank {
 	private Connection _conn = null;
 	private final String _template = "jdbc:mysql://%s/%s?user=%s&password=%s";
 	
-	public Datenbank(String server, String nutzer, String password) {
+	public Datenbank(String server, String nutzer, String password, String shema) {
 		_server = server;
 		_password = password;
 		_username = nutzer;
+		_shema = shema;
 	}
 	
 	public boolean Verbinde() {
 		try {
 			_conn = DriverManager.getConnection(String.format(_template, _server, _shema,  _username, _password));
+			return true;
 		} catch (SQLException e) {
-			System.out.println("");
+			System.out.println("Datenbankverbindung fehlgeschlagen");
+			System.out.println(e.getMessage());
 			return false;
 		}
-
-		return false;
 	}
 	
 	public boolean Verbinde(String shema) {
-		return false;
+		try {
+			_conn = DriverManager.getConnection(String.format(_template, _server, shema,  _username, _password));
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Datenbankverbindung fehlgeschlagen");
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 	
 	public Rückgabe Statement(String statement) {
