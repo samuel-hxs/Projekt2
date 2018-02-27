@@ -56,9 +56,7 @@ public class HexCardManager {
 		
 		_stack.remove(hexCard);
 		CardLayout cl = (CardLayout)(_cards.getLayout());
-		//cl.previous(_cards);
 		cl.show(_cards, _stack.peek().GetName());
-
 	}
 
 	public HexKonfiguration getKonfiguration() {

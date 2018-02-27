@@ -26,6 +26,9 @@ public class HexCard extends JPanel {
 	}
 	
 	public String GetName() {
+		if(_name == null) {
+			return String.valueOf(serialVersionUID);
+		}
 		return _name;
 	}
 

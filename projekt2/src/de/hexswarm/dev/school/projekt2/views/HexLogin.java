@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
@@ -33,27 +34,39 @@ public class HexLogin extends HexCard implements ActionListener {
 	private static final long serialVersionUID = 1369699227541183517L;
 	private SwingWorker<Boolean, Void> worker;
 	private Timer timer;
+	private HexLogin _local;
+	private JLabel lbl_info = new JLabel();
 	
 	public HexLogin(HexCardManager manager) {
 		super(manager);
 		_name = "Login";
-		HexLogin local = this;
-		//setBackground(new Color(119, 149, 242));
+		_local = this;
 		
 		// Layout
-		setLayout(new GridLayout(0, 2));
+		setLayout(null);
+		setBackground(Color.WHITE);
 
-		// Nutzer
-		JLabel lbl_info = new JLabel();
-		lbl_info.setText("DB Verbindung fehlgeschlagen!");
+		// Login Wdiget in etwa
+		AddLogin();
+		
+		// Fehler oder Info
+		lbl_info.setText("Anmeldung fehlgeschlagen!");
+		lbl_info.setBounds(15, 370, 360, 60);
+		lbl_info.setBackground(Color.RED);
+		lbl_info.setOpaque(true);
+		lbl_info.setVisible(false);
+		lbl_info.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_info.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lbl_info.setForeground(Color.WHITE);
 		add(lbl_info);
 
 		JButton btn_konfig = new JButton();
 		btn_konfig.setText("Einstellungen");
 		btn_konfig.setBackground(new Color(59, 89, 182));
 		btn_konfig.setForeground(Color.WHITE);
-		btn_konfig.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btn_konfig.setFont(new Font("Tahoma", Font.BOLD, 16));
         btn_konfig.setFocusPainted(false);
+        btn_konfig.setBounds(160, 515, 220, 40);
 		btn_konfig.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -61,31 +74,50 @@ public class HexLogin extends HexCard implements ActionListener {
 		    }
 		});
 		add(btn_konfig);
+	}
+	
+	private void AddLogin() {
+		JPanel panel = new JPanel();
+		panel.setBounds(15, 160, 360, 210);
+		panel.setLayout(null);
+		panel.setBackground(Color.ORANGE);
+		add(panel);
 
+		// Header Label
+		JLabel lbl_header = new JLabel();
+		lbl_header.setText("Anmeldung");
+		lbl_header.setBounds(10, 10, 220, 40);
+		lbl_header.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lbl_header.setForeground(Color.WHITE);
+		panel.add(lbl_header);
+		
 		// Nutzer
 		JLabel lbl_nutzer = new JLabel();
 		lbl_nutzer.setText("Nutzer:");
-		add(lbl_nutzer);
+		lbl_nutzer.setBounds(10, 60, 120, 40);
+		panel.add(lbl_nutzer);
+		
 		JTextField txt_nutzer = new JTextField();
-		add(txt_nutzer);
+		txt_nutzer.setBounds(120, 60, 220, 40);
+		panel.add(txt_nutzer);
 		
 		// Passwort
 		JLabel lbl_passwort = new JLabel();
+		lbl_passwort.setBounds(10, 110, 120, 40);
 		lbl_passwort.setText("Passwort:");
-		add(lbl_passwort);
+		panel.add(lbl_passwort);
+		
 		JPasswordField pwd_passwort = new JPasswordField();
-		//pwd_passwort.setBackground(new Color(79, 109, 202));
-		//pwd_passwort.setForeground(Color.WHITE);
+		pwd_passwort.setBounds(120, 110, 220, 40);
 		pwd_passwort.setFont(new Font("Tahoma", Font.BOLD, 12));
-		add(pwd_passwort);
-
-		add(new JPanel());
+		panel.add(pwd_passwort);
 		
 		JButton btn_login = new JButton();
+		btn_login.setBounds(120, 160, 220, 40);
 		btn_login.setText("Anmelden");
 		btn_login.setBackground(Color.GREEN);
 		btn_login.setForeground(Color.WHITE);
-		btn_login.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btn_login.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btn_login.setFocusPainted(false);
 		btn_login.addActionListener(new ActionListener() {
 		    @Override
@@ -100,7 +132,7 @@ public class HexLogin extends HexCard implements ActionListener {
 				int pause = 1000;
 				int speed = 100;
 				if (timer == null) {
-					timer = new Timer(speed, local);
+					timer = new Timer(speed, _local);
 		        timer.setInitialDelay(pause);
 		        timer.start(); 
 				}
@@ -126,7 +158,12 @@ public class HexLogin extends HexCard implements ActionListener {
 				        	Boolean b = get();
 				        	if(b == true)
 				        	{
+				        		lbl_info.setVisible(false);
 				        		new HexMain(_manager).Push();
+				        	}
+				        	else
+				        	{
+				        		lbl_info.setVisible(true);
 				        	}
 				        	worker.cancel(true);
 				        } catch (InterruptedException ignore) {}
@@ -138,13 +175,13 @@ public class HexLogin extends HexCard implements ActionListener {
 				            } else {
 				                why = e.getMessage();
 				            }
-				            System.err.println("Error retrieving file: " + why);
+				            System.err.println("Error: " + why);
 				        }
 				        catch(CancellationException e) {
 				        	//debug
-				        	{
-				        		new HexMain(_manager).Push();
-				        	}
+//				        	{
+//				        		new HexMain(_manager).Push();
+//				        	}
 			        	}
 
 				    	btn_login.setEnabled(true);
@@ -154,7 +191,7 @@ public class HexLogin extends HexCard implements ActionListener {
 				worker.execute();
 		    }
 		});
-		add(btn_login);
+		panel.add(btn_login);
 	}
 
 	@Override
