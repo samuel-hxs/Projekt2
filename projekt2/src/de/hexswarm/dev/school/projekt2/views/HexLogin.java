@@ -147,7 +147,7 @@ public class HexLogin extends HexCard implements ActionListener {
 				    public Boolean doInBackground() {
 				        Boolean result = new Boolean(false);
 				        HexNutzerManager ntzrmgr = new HexNutzerManager(_manager.getKonfiguration());
-				    	result = ntzrmgr.VerifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword());
+				    	result = ntzrmgr.verifyNutzer(txt_nutzer.getText(), pwd_passwort.getPassword());
 				        return result;
 				    }
 

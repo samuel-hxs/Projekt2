@@ -7,6 +7,7 @@ import java.util.LinkedList;
 public class Rückgabe {
 	LinkedList<LinkedList<String>> _row = new LinkedList<LinkedList<String>>();
 	LinkedList<String> _col = new LinkedList<String>();
+	boolean _erfolgreich;
 	
 	public void Add(ResultSet rs) {
 		LinkedList<String> list = new LinkedList<String>();
@@ -20,6 +21,14 @@ public class Rückgabe {
 		}
 		
 		_row.add(list);
+	}
+
+	public boolean isErfolreich() {
+		return _erfolgreich;
+	}
+
+	public void setErfolgreich(boolean erfolgreich) {
+		_erfolgreich = erfolgreich;
 	}
 
 }
