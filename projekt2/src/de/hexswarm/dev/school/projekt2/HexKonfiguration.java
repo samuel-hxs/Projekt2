@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.prefs.Preferences;
 
+import de.hexswarm.dev.school.projekt2.controlers.HexDBManager;
 import de.hexswarm.dev.school.projekt2.models.HexDatenbank;
 import de.hexswarm.dev.school.projekt2.models.Nutzer;
 
@@ -21,10 +22,8 @@ public class HexKonfiguration {
 	private static final String PREF_DB_SHEMA = "db_shema";
 	
 	private Nutzer _nutzer;
+	private HexDBManager _db_manager;
 	
-	// Retrieve the user preference node for the package
-	private Preferences _prefs = Preferences.userNodeForPackage(de.hexswarm.dev.school.projekt2.Main.class);
-
 	public HexDatenbank getDatenbank() {
 		if(_db == null) {
 			doLaden();
@@ -91,5 +90,13 @@ public class HexKonfiguration {
 		}
 		
 		return _nutzer;
+	}
+
+	public HexDBManager getDBManager() {
+		if(_db_manager == null) {
+			_db_manager = new HexDBManager(this);
+		}
+		
+		return _db_manager;
 	}
 }

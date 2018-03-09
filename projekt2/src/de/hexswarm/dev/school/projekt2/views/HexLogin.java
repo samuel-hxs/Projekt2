@@ -32,8 +32,8 @@ public class HexLogin extends HexCard implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1369699227541183517L;
-	private SwingWorker<Boolean, Void> worker;
-	private Timer timer;
+	private SwingWorker<Boolean, Void> _worker;
+	private Timer _timer;
 	private HexLogin _local;
 	private JLabel lbl_info = new JLabel();
 	
@@ -125,24 +125,24 @@ public class HexLogin extends HexCard implements ActionListener {
 		    	btn_login.setEnabled(false);
 		    
 				// Wahrscheinlich nicht notwendig.
-				if(worker != null) {
-					worker = null;
+				if(_worker != null) {
+					_worker = null;
 				}
 
 				int pause = 1000;
 				int speed = 100;
-				if (timer == null) {
-					timer = new Timer(speed, _local);
-		        timer.setInitialDelay(pause);
-		        timer.start(); 
+				if (_timer == null) {
+					_timer = new Timer(speed, _local);
+		        _timer.setInitialDelay(pause);
+		        _timer.start(); 
 				}
 				else {
-					timer.restart();
+					_timer.restart();
 				}
 				
-				if(worker == null) {
+				if(_worker == null) {
 				// Ein Test für Hintergrundberechnungen oder zeitlastige Aufgaeben.
-				worker = new SwingWorker<Boolean, Void>() {
+				_worker = new SwingWorker<Boolean, Void>() {
 				    @Override
 				    public Boolean doInBackground() {
 				        Boolean result = new Boolean(false);
@@ -165,7 +165,7 @@ public class HexLogin extends HexCard implements ActionListener {
 				        	{
 				        		lbl_info.setVisible(true);
 				        	}
-				        	worker.cancel(true);
+				        	_worker.cancel(true);
 				        } catch (InterruptedException ignore) {}
 				        catch (java.util.concurrent.ExecutionException e) {
 				            String why = null;
@@ -178,17 +178,13 @@ public class HexLogin extends HexCard implements ActionListener {
 				            System.err.println("Error: " + why);
 				        }
 				        catch(CancellationException e) {
-				        	//debug
-//				        	{
-//				        		new HexMain(_manager).Push();
-//				        	}
 			        	}
 
 				    	btn_login.setEnabled(true);
 				    }
 				};
 				}
-				worker.execute();
+				_worker.execute();
 		    }
 		});
 		panel.add(btn_login);
@@ -196,13 +192,12 @@ public class HexLogin extends HexCard implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-        if (!worker.isDone()) {
+        if (!_worker.isDone()) {
         	//Debug
-        	{worker.cancel(true);
-        	timer.stop();
+        	{_worker.cancel(true);
+        	_timer.stop();
         	}return;
         }
-        timer.stop();
+        _timer.stop();
 	}
-
 }

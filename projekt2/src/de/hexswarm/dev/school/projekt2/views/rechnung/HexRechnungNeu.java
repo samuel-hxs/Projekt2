@@ -38,29 +38,38 @@ public class HexRechnungNeu extends HexCard {
 		
 		// Layout
 		setLayout(null);
-		JLabel lbl_kunde = new JLabel("Kunde");
+		JLabel lbl_kunde = new JLabel("Kunde:");
 		lbl_kunde.setBounds(10, 10, 410, 40);
         add(lbl_kunde);
         
 		JTextField txt_kunde = new JTextField();
-		txt_kunde.setBounds(10, 45, 350, 40);
+		txt_kunde.setBounds(10, 45, 370, 40);
 		add(txt_kunde);
 		
-		JLabel lbl_nutzer = new JLabel("Berarbeiter");
-		lbl_nutzer.setBounds(10, 80, 240, 40);
-        add(lbl_nutzer);
-		
-        JLabel lbl_nutzer_value = new JLabel(_manager.getKonfiguration().getNutzer().GetName());
-		lbl_nutzer_value.setBounds(240, 80, 240, 40);
-        add(lbl_nutzer_value);
+//		JLabel lbl_nutzer = new JLabel("Berarbeiter");
+//		lbl_nutzer.setBounds(10, 80, 240, 40);
+//        add(lbl_nutzer);
+//		
+//        JLabel lbl_nutzer_value = new JLabel(_manager.getKonfiguration().getNutzer().GetName());
+//		lbl_nutzer_value.setBounds(240, 80, 240, 40);
+//        add(lbl_nutzer_value);
 
+		setLayout(null);
+		JLabel lbl_artikel_search = new JLabel("Artikel:");
+		lbl_artikel_search.setBounds(10, 90, 410, 40);
+        add(lbl_artikel_search);
+        
+		JTextField txt_artikel_search = new JTextField();
+		txt_artikel_search.setBounds(10, 125, 370, 40);
+		add(txt_artikel_search);
+        
 		JLabel lbl_artikel = new JLabel("Alle Artikel");
 		lbl_artikel.setBounds(10, 160, 170, 40);
 		add(lbl_artikel);
 		
-		JLabel lbl_artikel_2 = new JLabel("Bestellte Artikel");
-		lbl_artikel_2.setBounds(190, 160, 170, 40);
-		add(lbl_artikel_2);
+//		JLabel lbl_artikel_2 = new JLabel("Bestellte Artikel");
+//		lbl_artikel_2.setBounds(190, 160, 170, 40);
+//		add(lbl_artikel_2);
 		
 		DefaultListModel arts = new DefaultListModel();
 		JList<String> list_artikel = new JList(arts);
@@ -68,20 +77,20 @@ public class HexRechnungNeu extends HexCard {
 		for (int i = 0; i < arters.size(); i++) {
 			arts.addElement(arters.get(i));
 		}
-		list_artikel.setBounds(10, 200, 170, 310);
+		list_artikel.setBounds(10, 200, 370, 310);
 		add(list_artikel);
-		
 
-		DefaultListModel artser = new DefaultListModel();
-		JList<String> list_artikel_touse = new JList(artser);
-		LinkedList arterser = r.getArtikels();
-		for (int i = 0; i < arters.size(); i++) {
-			artser.addElement(arters.get(i));
-		}
-		list_artikel_touse.setBounds(190, 200, 170, 310);
-		add(list_artikel_touse);
+//		DefaultListModel artser = new DefaultListModel();
+//		JList<String> list_artikel_touse = new JList(artser);
+//		LinkedList arterser = r.getArtikels();
+//		for (int i = 0; i < arters.size(); i++) {
+//			artser.addElement(arters.get(i));
+//		}
+//		list_artikel_touse.setBounds(190, 200, 170, 310);
+//		add(list_artikel_touse);
 		
 		JButton btn_zurück = new JButton();
+		btn_zurück.setBounds(10, 520, 170, 40);
 		btn_zurück.setText("Zurück");
 		btn_zurück.setBackground(Color.RED);
 		btn_zurück.setForeground(Color.WHITE);
@@ -93,10 +102,10 @@ public class HexRechnungNeu extends HexCard {
 		    	Pop();
 		    }
 		});
-		btn_zurück.setBounds(10, 520, 170, 40);
 		add(btn_zurück);
 		
 		JButton btn_hinzufügen = new JButton();
+		btn_hinzufügen.setBounds(210, 520, 170, 40);
 		btn_hinzufügen.setText("Abschließen");
 		btn_hinzufügen.setBackground(Color.GREEN);
 		btn_hinzufügen.setForeground(Color.WHITE);
@@ -108,7 +117,6 @@ public class HexRechnungNeu extends HexCard {
 		    	
 		    }
 		});
-		btn_hinzufügen.setBounds(190, 520, 170, 40);
 		add(btn_hinzufügen);
 	}
 }

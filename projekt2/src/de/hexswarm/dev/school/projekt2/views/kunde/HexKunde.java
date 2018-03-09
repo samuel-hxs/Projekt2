@@ -1,27 +1,20 @@
 package de.hexswarm.dev.school.projekt2.views.kunde;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 import de.hexswarm.dev.school.projekt2.controlers.HexCardManager;
+import de.hexswarm.dev.school.projekt2.models.Rückgabe;
 import de.hexswarm.dev.school.projekt2.models.StringListModel;
 import de.hexswarm.dev.school.projekt2.views.HexCard;
 
@@ -32,6 +25,8 @@ public class HexKunde extends HexCard {
 	 */
 	private static final long serialVersionUID = -5534156334935396424L;
 	private JList<String> lst_kunden;
+	private JLabel lbl_kunde;
+    private LinkedList<String> _model = new LinkedList<String>();
 	
 	public HexKunde(HexCardManager manager) {
 		super(manager);
@@ -41,15 +36,19 @@ public class HexKunde extends HexCard {
 		setLayout(null);
 		setBackground(Color.WHITE);
 
+		lbl_kunde = new JLabel("Info");
+		lbl_kunde.setBounds(15, 65, 330, 600);
+		lbl_kunde.setVisible(false);
+		lbl_kunde.setBackground(Color.RED);
+		lbl_kunde.setOpaque(true);
+		add(lbl_kunde);
+		
         JLabel label = new JLabel("Kunden:");
         label.setBounds(10, 10, 340, 40);
         label.setLabelFor(lst_kunden);
         add(label);
-        
-		LinkedList<String> model = new LinkedList<String>();
-		model.add("Käsekuchen Hellblau 60cm");
 		
-		lst_kunden = new JList<String>(new StringListModel(model));
+		lst_kunden = new JList<String>(new StringListModel(_model));
         lst_kunden.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         lst_kunden.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         lst_kunden.setVisibleRowCount(-1);
@@ -104,5 +103,29 @@ public class HexKunde extends HexCard {
 		    }
 		});
 		add(btn_neu);
+		
+		doAbfrage();
+	}
+
+	private void doAbfrage() {
+		String template = "SELECT * FROM kunde";
+    	
+    	String statement = String.format(template, "");
+    	_manager.getKonfiguration().getDBManager().doStatement(statement);
+    	
+    	Rückgabe rg = null;
+    	if(rg == null) {
+    		return;
+    	}
+    	
+    	if(rg.isErfolreich()) {
+    		LinkedList<LinkedList<Object>> reihen = rg.getReihen();
+    		_model.add(reihen.get(0).get(0).toString());
+    	}
+    	else {
+    		System.out.println("Auslesen der Kunden fehlgeschlagen!");
+    		lbl_kunde.setText("Auslesen der Kunden ist fehlgeschlagen!");
+    		lbl_kunde.setVisible(true);
+    	}
 	}
 }

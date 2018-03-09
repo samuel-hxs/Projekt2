@@ -1,10 +1,16 @@
 package de.hexswarm.dev.school.projekt2.controlers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.CancellationException;
+
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.models.HexDatenbank;
@@ -15,6 +21,7 @@ public class HexDBManager {
 	private HexKonfiguration _konf;
 	private Connection _conn = null;
 	private final String _template = "jdbc:mysql://%s/%s?user=%s&password=%s";
+	private SwingWorker<Rückgabe, Void> _worker;
 	
 	public HexDBManager(HexKonfiguration konf) {
 		_konf = konf;
@@ -44,7 +51,13 @@ public class HexDBManager {
 		}
 	}
 	
-	public Rückgabe doStatement(String statement) {
+	public void doStatement(String statement) {
+		startWorker(statement);
+	}
+	
+	
+	
+	public Rückgabe doInBackground(String statement) {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Rückgabe rgb = new Rückgabe();
@@ -64,7 +77,11 @@ public class HexDBManager {
 		    if (stmt.execute(statement)) {
 		        rs = stmt.getResultSet();
 		    }
-
+		    else
+		    {
+		    	return rgb;
+		    }
+		    
 		    // Now do something with the ResultSet ....
 		    while (rs.next()) {
 		    	rgb.Add(rs);
@@ -77,6 +94,10 @@ public class HexDBManager {
 		    System.out.println("SQLException:\n\t" + ex.getMessage());
 		    System.out.println("SQLState:\n\t" + ex.getSQLState());
 		    System.out.println("VendorError:\n\t" + ex.getErrorCode());
+		}
+		catch(IndexOutOfBoundsException ex)
+		{
+			System.out.println("Erhaltene Daten haben nicht die erwartete Läge.");
 		}
 		finally {
 		    if (rs != null) {
@@ -97,5 +118,32 @@ public class HexDBManager {
 		}
 		
 		return rgb;
+	}
+	
+	private void startWorker(String statement) {	    
+		// Wahrscheinlich nicht notwendig.
+		if(_worker != null) {
+			_worker = null;
+		}
+		
+		if(_worker == null) {
+		// Ein Test für Hintergrundberechnungen oder zeitlastige Aufgaeben.
+		_worker = new SwingWorker<Rückgabe, Void>() {
+		    @Override
+		    public Rückgabe doInBackground() {
+		        return HexDBManager.this.doInBackground(statement);
+		    }
+
+		    @Override
+		    public void done() {
+		        //Remove the "Loading images" label.
+		        try {
+		        	_worker.cancel(true);
+		        } catch(CancellationException e) {
+	        	}
+		    }
+		};
+		}
+		_worker.execute();
 	}
 }

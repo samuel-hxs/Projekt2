@@ -46,12 +46,5 @@ public class HexSplash extends HexCard {
 			    new HexLogin(_manager).Push();
 			  }
 			}, 800); // 800 ms
-		
-		// TODO Laden der Konfiguration
-		// TODO Verbinden zur Datenbank
-		// TODO Laden der Nutzerinformationen
-		// TODO Timeout wenn verbindung zu lange dauert zur Loginform wechseln
-		// TODO Errortimeout wenn keine Verbindung, in der Loginform fehler anzeigen als top down drop
-		// TODO Auslagern des Listeners in einen Controller
 	}
 }
