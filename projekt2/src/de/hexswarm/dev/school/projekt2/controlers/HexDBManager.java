@@ -1,7 +1,5 @@
 package de.hexswarm.dev.school.projekt2.controlers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +8,6 @@ import java.sql.Statement;
 import java.util.concurrent.CancellationException;
 
 import javax.swing.SwingWorker;
-import javax.swing.Timer;
 
 import de.hexswarm.dev.school.projekt2.HexKonfiguration;
 import de.hexswarm.dev.school.projekt2.models.HexDatenbank;
@@ -22,6 +19,7 @@ public class HexDBManager {
 	private Connection _conn = null;
 	private final String _template = "jdbc:mysql://%s/%s?user=%s&password=%s";
 	private SwingWorker<Rückgabe, Void> _worker;
+	private boolean fertig;
 	
 	public HexDBManager(HexKonfiguration konf) {
 		_konf = konf;
@@ -35,7 +33,7 @@ public class HexDBManager {
 			return true;
 		} catch (SQLException e) {
 			//System.out.println("Datenbankverbindung fehlgeschlagen");
-			//System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
@@ -55,8 +53,6 @@ public class HexDBManager {
 		startWorker(statement);
 	}
 	
-	
-	
 	public Rückgabe doInBackground(String statement) {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -65,9 +61,9 @@ public class HexDBManager {
 		if(_conn == null || _db.isVerbunden() == false) {
 			_db.setVerbunden(doVerbinden());
 		}
-		
 
 		if(_conn == null || _db.isVerbunden() == false) {
+			fertig = true;
 			return rgb;
 		}
 		
@@ -79,6 +75,7 @@ public class HexDBManager {
 		    }
 		    else
 		    {
+				fertig = true;
 		    	return rgb;
 		    }
 		    
@@ -117,6 +114,7 @@ public class HexDBManager {
 		    }
 		}
 		
+		fertig = true;
 		return rgb;
 	}
 	
@@ -145,5 +143,9 @@ public class HexDBManager {
 		};
 		}
 		_worker.execute();
+	}
+	
+	public boolean isFertig() {
+		return fertig;
 	}
 }

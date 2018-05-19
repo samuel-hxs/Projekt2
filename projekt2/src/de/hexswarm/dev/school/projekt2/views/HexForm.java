@@ -23,6 +23,7 @@ public class HexForm extends JFrame {
 		int width = 400;
 		int height = 600;
 		this.setTitle(name);
+		
 		//this.setBounds(new Rectangle(0, 0, width, height));
 		this.setPreferredSize(new Dimension(width, height));
 		this.setMinimumSize(new Dimension(width, height));
